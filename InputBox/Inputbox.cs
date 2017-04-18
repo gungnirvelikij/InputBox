@@ -1,60 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace InputBox
 {
-    class Inputbox
+    class Inputbox : Form
     {
-        private string input;
-        private string text;
-        private string title;
-
-        public Inputbox()
-        {
-            
-        }
+        
+        private Button btnCancel;
+        private Button btnOk;
+        private Form1 form;
+        private Label descriptionLabel;
+        private TextBox inputTextBox;
 
         public Inputbox(string title, string text)
         {
-            setText(text);
-            setTitle(title);
+            form = Form1.getInstance();
+
+            this.Text = title;
+            this.AutoSize = true;
+
+            descriptionLabel = new Label();  // create label, set text and place
+            descriptionLabel.Location = new Point(13, 13);
+            descriptionLabel.Text = text;
+            descriptionLabel.AutoSize = true;
+            Controls.Add(descriptionLabel);
+
+            inputTextBox = new TextBox();
+            inputTextBox.Location = new Point(13, 40);
+            Controls.Add(inputTextBox);
+
+            btnOk = new Button();
+            btnOk.Location = new Point(13, 67);
+            btnOk.Text = "OK";
+            btnOk.Click += BtnOk_Click;
+            Controls.Add(btnOk);
+
+            Button btnCancel = new Button();
+            btnCancel.Location = new Point(100, 67);
+            btnCancel.Text = "Cancel";
+            btnCancel.Click += BtnCancel_Click;
+            Controls.Add(btnCancel);
+
+            display();
         }
 
-        public bool displayInputbox()
+        public void display()
         {
-            
+                Show();
         }
 
-        public string getInput()
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
-            if (input != "" || input == null)
-            {
-                return input;
-            }
-            return "no input was given";
+            Close();
         }
 
-        public void setTitle(string title)
+        private void BtnOk_Click(object sender, EventArgs eventArgs)
         {
-            this.title = title;
-        }
-
-        public void setText(string text)
-        {
-            this.text = text;
-        }
-
-        public string getTitle()
-        {
-            return title;
-        }
-
-        public string getText()
-        {
-            return text;
+            form.setLabelInput(inputTextBox.Text);
+            Close();
         }
     }
 }
